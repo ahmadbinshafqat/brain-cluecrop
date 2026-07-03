@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClueCrop</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="app">
+    <aside>
+      <h1>ClueCrop</h1>
+      <p class="tagline">Messy text → ranked study cards.</p>
+      <button id="newBtn">New set</button>
+      <h2>Saved sets</h2>
+      <div id="sets" class="sets"></div>
+    </aside>
+    <section class="workspace">
+      <div class="panel input-panel">
+        <label>Set title <input id="title" placeholder="Optional title" /></label>
+        <label>Pasted source text <textarea id="sourceText" placeholder="Paste notes, an article excerpt, or a meeting transcript here..."></textarea></label>
+        <button id="generateBtn">Generate flashcards</button>
+        <span id="status"></span>
+      </div>
+      <div class="panel cards-panel">
+        <div class="cards-header">
+          <h2>Ranked flashcards</h2>
+          <button id="saveBtn" disabled>Save edits</button>
+        </div>
+        <div id="cards" class="cards empty">Generate a set to edit flashcards here.</div>
+      </div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  cluecrop:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_PATH: /app/data/cluecrop.sqlite
+    volumes:
+      - cluecrop-data:/app/data
+volumes:
+  cluecrop-data:
