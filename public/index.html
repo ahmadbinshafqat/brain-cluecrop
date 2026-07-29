@@ -1,36 +1,98 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ClueCrop</title>
-  <link rel="stylesheet" href="/styles.css" />
-</head>
-<body>
-  <main class="app">
-    <aside>
-      <h1>ClueCrop</h1>
-      <p class="tagline">Messy text → ranked study cards.</p>
-      <button id="newBtn">New set</button>
-      <h2>Saved sets</h2>
-      <div id="sets" class="sets"></div>
-    </aside>
-    <section class="workspace">
-      <div class="panel input-panel">
-        <label>Set title <input id="title" placeholder="Optional title" /></label>
-        <label>Pasted source text <textarea id="sourceText" placeholder="Paste notes, an article excerpt, or a meeting transcript here..."></textarea></label>
-        <button id="generateBtn">Generate flashcards</button>
-        <span id="status"></span>
-      </div>
-      <div class="panel cards-panel">
-        <div class="cards-header">
-          <h2>Ranked flashcards</h2>
-          <button id="saveBtn" disabled>Save edits</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClueCrop</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="logo">CC</div>
+          <div>
+            <h1>ClueCrop</h1>
+            <p>Local flashcard sets</p>
+          </div>
         </div>
-        <div id="cards" class="cards empty">Generate a set to edit flashcards here.</div>
-      </div>
-    </section>
-  </main>
-  <script src="/app.js"></script>
-</body>
+
+        <div class="set-filters" aria-label="Saved set search and filters">
+          <label for="setSearch">Search saved sets</label>
+          <input
+            id="setSearch"
+            type="search"
+            placeholder="Title, question, answer..."
+            autocomplete="off"
+          />
+
+          <div class="filter-row">
+            <label for="setSort">
+              Sort
+              <select id="setSort">
+                <option value="recent">Recently updated</option>
+                <option value="oldest">Oldest updated</option>
+                <option value="title">Title A-Z</option>
+                <option value="cards">Most cards</option>
+              </select>
+            </label>
+            <label for="minCards">
+              Min cards
+              <input id="minCards" type="number" min="0" step="1" placeholder="0" />
+            </label>
+          </div>
+
+          <div class="filter-actions">
+            <span id="setResultsMeta" class="results-meta">0 saved sets</span>
+            <button id="clearSetFilters" type="button" class="ghost-button">Clear</button>
+          </div>
+        </div>
+
+        <ul id="setsList" class="sets-list"></ul>
+      </aside>
+
+      <main class="workspace">
+        <section class="panel generator-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Generate flashcards</h2>
+              <p>Paste notes, articles, or transcripts. ClueCrop runs locally.</p>
+            </div>
+          </div>
+
+          <label for="titleInput">Optional set title</label>
+          <input id="titleInput" type="text" placeholder="e.g. Biology chapter 4" />
+
+          <label for="sourceText">Source text</label>
+          <textarea
+            id="sourceText"
+            class="source-text"
+            placeholder="Paste study notes here..."
+          ></textarea>
+
+          <button id="generateBtn" class="primary-button" type="button">Generate flashcards</button>
+        </section>
+
+        <section class="panel editor-panel">
+          <div class="panel-heading editor-heading">
+            <div>
+              <label for="currentTitle" class="sr-only">Current set title</label>
+              <input id="currentTitle" class="title-editor" type="text" placeholder="No set selected" />
+              <p id="currentMeta">Generate or select a saved set to begin editing.</p>
+            </div>
+            <div class="editor-actions">
+              <button id="deleteBtn" type="button" class="danger-button" disabled>Delete</button>
+              <button id="saveBtn" type="button" class="primary-button" disabled>Save edits</button>
+            </div>
+          </div>
+
+          <div id="cardsEditor" class="cards-editor"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="status" class="status info" role="status">Ready.</div>
+
+    <script src="/app.js" defer></script>
+  </body>
 </html>

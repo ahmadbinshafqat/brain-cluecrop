@@ -1,35 +1,54 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
-import { FlashcardsService } from './flashcards.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { GenerateFlashcardsDto, UpdateFlashcardSetDto } from './dto';
+import { FlashcardsService, FlashcardSetListSort } from './flashcards.service';
 
 @Controller('api/flashcard-sets')
 export class FlashcardsController {
-  constructor(private readonly service: FlashcardsService) {}
+  constructor(private readonly flashcardsService: FlashcardsService) {}
 
   @Get()
-  list() {
-    return this.service.list();
+  list(
+    @Query('q') q?: string,
+    @Query('sort') sort?: FlashcardSetListSort,
+    @Query('minCards') minCards?: string,
+  ) {
+    return this.flashcardsService.list({
+      q,
+      sort,
+      minCards: minCards ? Number(minCards) : undefined,
+    });
   }
 
   @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number) {
-    const set = await this.service.get(id);
-    if (!set) throw new NotFoundException('Flashcard set not found');
-    return set;
+  get(@Param('id', ParseIntPipe) id: number) {
+    return this.flashcardsService.get(id);
   }
 
   @Post('generate')
   generate(@Body() dto: GenerateFlashcardsDto) {
-    return this.service.generate(dto);
+    return this.flashcardsService.generate(dto);
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateFlashcardSetDto) {
-    return this.service.update(id, dto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateFlashcardSetDto,
+  ) {
+    return this.flashcardsService.update(id, dto);
   }
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id);
+    return this.flashcardsService.remove(id);
   }
 }
